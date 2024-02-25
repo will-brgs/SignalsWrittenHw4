@@ -5,97 +5,177 @@
 % * Date:                     Created 2/17/2024, Last Edited 2/26/2024
 % * With contributions from:  Mack Larosa, Tasha Igic, Mischa Tranor
 %%
+%% a
+N = (2*pi) / (pi/5);
+n = 0:1:N-1; 
+a = 3 + sin(4*pi/5*n + pi/10) + cos(2*pi*n) + (-1).^n;
 
-% Define signal a
-fs=100;
-t = 0:1/fs:2*pi; 
-a = 3 + sin(4*pi/5*t + pi/10) + cos(2*pi*t) + (-1).^t;
+afft = fft(a);
 
-% Define signal b (delta function)
-N = 50; % Number of periods
-b = zeros(1, N);
-b(1:5:end) = 1;
-b(2:5:end) = -2;
+ak_a = afft/N;
 
-% Define signal c (i) with period N=4
-N_c1 = 4;
-t_c1 = 0:1/fs:N_c1-1/fs;
-c1 = 1 - sin(pi/2*t_c1);
+figure;
+hold on
+subplot(2,1,1);
+stem(abs(fftshift(afft)), LineWidth=1.5);
+title('Real Part')
+xlabel('k value');
+ylabel('Ak Output');
+subplot(2,1,2)
+stem(angle(fftshift(afft)), LineWidth=1.5);
+title('Imaginary Part')
+xlabel('k value');
+ylabel('Ak Output');
+sgtitle('FFT For 1.a)');
 
-% Define signal c (ii) with period N=16
-N_c2 = 16;
-t_c2 = 0:1/fs:N_c2-1/fs;
-c2 = 1 - sin(pi/2*t_c2);
+hold off
+%% b, one period
+b = [1,0,-2,0,0];
+N = 5;
+bfft = fft(b);
+ak_b = bfft / N;
 
-% Define signal d
-d = sin(7*pi/2*t) + exp(1j*pi/4*t);
+figure;
+hold on
+subplot(2,1,1);
+stem(real(fftshift(b)), LineWidth=1.5);
+title('Real Part')
+xlabel('k value');
+ylabel('Ak Output');
+subplot(2,1,2)
+stem(imag(fftshift(b)), LineWidth=1.5);
+title('Imaginary Part')
+xlabel('k value');
+ylabel('Ak Output');
+sgtitle('FFT For 1.b)');
+hold off
 
-% Calculate fundamental frequency and coefficients for signal a
-ca = fftshift(fft(a, N));
-[~, I] = max(abs(ca));
-fa = fs * (0:N-1) / N;  % Frequency vector
+%% C, N=4
+N = 4;
+n = 0:1:N-1;
+c1 = 1 - sin(pi/2*n);
+c1fft = fft(c1);
+ak_c1 = c1fft/N;
 
-% Calculate fundamental frequency and coefficients for signal b
-[fb, cb] = fftshift(fft(b, N));
-[~, I] = max(abs(cb));
-fb = fs * (I-1) / N;
+figure;
+hold on
+subplot(2,1,1);
+stem(real(fftshift(c1)), LineWidth=1.5);
+title('Real Part')
+xlabel('k value');
+ylabel('Ak Output');
+subplot(2,1,2)
+stem(imag(fftshift(c1)), LineWidth=1.5);
+title('Imaginary Part')
+xlabel('k value');
+ylabel('Ak Output');
+sgtitle('FFT For 1.C: N = 4');
+hold off
 
-% Calculate fundamental frequency and coefficients for signal c (i)
-[fc1, cc1] = fftshift(fft(c1, N_c1));
-[~, I] = max(abs(cc1));
-fc1 = fs * (I-1) / N_c1;
+%% C, N=16
+N = 16;
+n = 0:1:N-1;
+c2 = 1 - sin(pi/2*n);
+c2fft = fft(c2);
+ak_c2 = c2fft/N;
 
-% Calculate fundamental frequency and coefficients for signal c (ii)
-[fc2, cc2] = fftshift(fft(c2, N_c2));
-[~, I] = max(abs(cc2));
-fc2 = fs * (I-1) / N_c2;
+figure;
+hold on
+subplot(2,1,1);
+stem(real(fftshift(c2)), LineWidth=1.5);
+title('Real Part')
+xlabel('k value');
+ylabel('Ak Output');
+subplot(2,1,2)
+stem(imag(fftshift(c2)), LineWidth=1.5);
+title('Imaginary Part')
+xlabel('k value');
+ylabel('Ak Output');
+sgtitle('FFT For 1.C: N = 14');
+hold off
 
-% Calculate fundamental frequency and coefficients for signal d
-[fd, cd] = fftshift(fft(d, N));
-[~, I] = max(abs(cd));
-fd = fs * (I-1) / N;
+%% d
+N = (2*pi)/(pi/4);
+n = 0:1:N-1; 
+d = sin(7*pi/2*n) + exp(1j*pi/4*n);
+dfft = fft(d);
+ak_d = dfft/N;
 
-% Plot signal a and its magnitude spectrum
-figure(1);
-subplot(2, 1, 1);
-plot(t, a);
-title('Signal a');
-subplot(2, 1, 2);
-plot(fa/fs, abs(ca));
-title('Magnitude Spectrum of Signal a');
+figure;
+hold on
+subplot(2,1,1);
+stem(real(fftshift(d)), LineWidth=1.5);
+title('Real Part')
+xlabel('k value');
+ylabel('Ak Output');
+subplot(2,1,2)
+stem(imag(fftshift(d)), LineWidth=1.5);
+title('Imaginary Part')
+xlabel('k value');
+ylabel('Ak Output');
+sgtitle('FFT For 1.d');
+hold off
 
-% Plot signal b and its magnitude spectrum
-figure(2);
-subplot(2, 1, 1);
-plot(t(1:N), b);
-title('Signal b');
-subplot(2, 1, 2);
-plot(fb/fs, abs(cb));
-title('Magnitude Spectrum of Signal b');
+%% Question 2:
+N = 8;
+%% a
+k = -4:1:3;
+ak = [-1,-1j,0,3,2,3,0,1j];
 
-% Plot signal c (i) and its magnitude spectrum
-figure(3);
-subplot(2, 1, 1);
-plot(t_c1, c1);
-title('Signal c (N=4)');
-subplot(2, 1, 2);
-plot(fc1/fs, abs(cc1));
-title('Magnitude Spectrum of Signal c (N=4)');
+aifft = ifft(ak);
+hand = 
 
-% Plot signal c (ii) and its magnitude spectrum
-figure(4);
-subplot(2, 1, 1);
-plot(t_c2, c2);
-title('Signal c (N=16)');
-subplot(2, 1, 2);
-plot(fc2/fs, abs(cc2));
-title('Magnitude Spectrum of Signal c (N=16)');
+figure
+hold on
+subplot (2,1,1)
+stem(k,(fftshift(aifft), LineWidth=1.5);
+title('IFFT for a');
+xlabel('k value');
+ylabel('Ak Output');
+subplot (2,1,2)
+stem(k,hand, LineWidth=1.5);
+title('Hand Calcualation for b');
+xlabel('k value');
+ylabel('Ak Output');
+sgtitle('IFFT for 2.a')
+hold off
+%% b
+k = 0:1:N;
+ak = cos((pi*k)/4);
 
-% Plot signal d and its magnitude spectrum
-figure(5);
-subplot(2, 1, 1);
-plot(t, d);
-title('Signal d');
-subplot(2, 1, 2);
-plot(fd/fs, abs(cd));
+bifft = ifft(ak);
 
+figure
+hold on
+subplot (2,1,1)
+stem(k,ifftshift(bifft), LineWidth=1.5);
+title('IFFT for a');
+xlabel('k value');
+ylabel('Ak Output');
+subplot (2,1,2)
+stem(k,hand, LineWidth=1.5);
+title('Hand Calcualation for c');
+xlabel('k value');
+ylabel('Function Output');
+sgtitle('IFFT for 2.b')
+hold off
+%% c
+k = -2:1:6;
+ak = [1,1,1,1,1,0,0,0];
+cbifft = ifft(ak);
+
+subplot(3,1,3);
+figure
+hold on
+subplot (2,1,1)
+stem(k,real(ifftshift(cifft)), LineWidth=1.5);
+title('IFFT for a');
+xlabel('k value');
+ylabel('Ak Output');
+subplot (2,1,2)
+stem(k,hand, LineWidth=1.5);
+title('IFFT for a');
+xlabel('k value');
+ylabel('Function Output');
+sgtitle('IFFT for 2.c')
+hold off
