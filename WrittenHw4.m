@@ -10,18 +10,18 @@ N = (2*pi) / (pi/5);
 n = 0:1:N-1; 
 a = 3 + sin(4*pi/5*n + pi/10) + cos(2*pi*n) + (-1).^n;
 
-afft = fft(a);
+afft = ft(a);
 
 ak_a = afft/N;
 
 figure;
 hold on
-subplot(2,1,1);
+subplot(2,2,1);
 stem(abs(fftshift(afft)), LineWidth=1.5);
 title('Real Part')
 xlabel('k value');
 ylabel('Ak Output');
-subplot(2,1,2)
+subplot(2,2,2)
 stem(angle(fftshift(afft)), LineWidth=1.5);
 title('Imaginary Part')
 xlabel('k value');
@@ -32,7 +32,7 @@ hold off
 %% b, one period
 b = [1,0,-2,0,0];
 N = 5;
-bfft = fft(b);
+bfft = ft(b);
 ak_b = bfft / N;
 
 figure;
@@ -54,7 +54,7 @@ hold off
 N = 4;
 n = 0:1:N-1;
 c1 = 1 - sin(pi/2*n);
-c1fft = fft(c1);
+c1fft = ft(c1);
 ak_c1 = c1fft/N;
 
 figure;
@@ -76,7 +76,7 @@ hold off
 N = 16;
 n = 0:1:N-1;
 c2 = 1 - sin(pi/2*n);
-c2fft = fft(c2);
+c2fft = ft(c2);
 ak_c2 = c2fft/N;
 
 figure;
@@ -98,7 +98,7 @@ hold off
 N = (2*pi)/(pi/4);
 n = 0:1:N-1; 
 d = sin(7*pi/2*n) + exp(1j*pi/4*n);
-dfft = fft(d);
+dfft = ft(d);
 ak_d = dfft/N;
 
 figure;
@@ -123,12 +123,11 @@ k = -4:1:3;
 ak = [-1,-1j,0,3,2,3,0,1j];
 
 aifft = ifft(ak);
-hand = 
 
 figure
 hold on
 subplot (2,1,1)
-stem(k,(fftshift(aifft), LineWidth=1.5);
+stem(k,fftshift(aifft), LineWidth=1.5);
 title('IFFT for a');
 xlabel('k value');
 ylabel('Ak Output');
@@ -179,3 +178,156 @@ xlabel('k value');
 ylabel('Function Output');
 sgtitle('IFFT for 2.c')
 hold off
+%% Question 3b
+%% 3bi
+N1 = 3;
+N = [16,32,64];
+
+% N = 16
+n = (-N1:1:N(1)-N1);
+x = zeros(1,length(n));
+x(1:N(1)-N1)= 1;
+
+ft = fft(x);
+
+figure, hold on
+subplot (3,2,1)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for N= 16');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,2)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for N= 16');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+%N = 32
+n = (-N1:1:N(2)-N1);
+x = zeros(1,length(n));
+x(1:N(2)-N1)= 1;
+
+ft = fft(x);
+
+subplot (3,2,3)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for N= 32');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,4)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for N= 32');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+% N= 64
+n = (-N1:1:N(3)-N1);
+x = zeros(1,length(n));
+x(1:N(3)-N1)= 1;
+
+ft = fft(x);
+
+subplot (3,2,5)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for N= 64');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,6)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for N= 64');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+sgtitle('Fourier Series Coefficients for bi:')
+hold off
+
+% Observation : We see identical relationships with the fourier series
+% coefficients with respective chagnes to N, notably, magnitude has a very
+% large magnitude at the first value calculated, while the rest are low and
+% have a roughly wave shaped appearence. For the phase we see an identical
+% triangular wedge pattern which is given more datapoints in higher N1
+% values
+
+
+%% 3bii
+N1vector = [2,6,10];
+N = 32;
+
+% N1 = 2
+N1 = N1vector(1);
+n = (-N1:1:N-N1);
+x = zeros(1,length(n));
+x(1:N-N1)= 1;
+
+ft = fft(x);
+
+figure, hold on
+subplot (3,2,1)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for N= 2');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,2)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for N= 2');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+%N1 = 6
+
+N1 = N1vector(2);
+n = (-N1:1:N-N1);
+x = zeros(1,length(n));
+x(1:N-N1)= 1;
+
+ft = fft(x);
+
+subplot (3,2,3)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for N1= 6');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,4)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for N1= 6');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+%N1 = 10
+
+N1 = N1vector(3);
+n = (-N1:1:N-N1);
+x = zeros(1,length(n));
+x(1:N-N1)= 1;
+
+ft = fft(x);
+
+subplot (3,2,5)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for N1= 10');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,6)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for N1= 10');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+sgtitle('Fourier Series Coefficients for bii:')
+
+% Observation: While the output bears similarity to bi, there are clear
+% differences. Magnitude shares the intiial spike but shows a concave
+% upwards trend close to the enpoint of indicies run through fft. For phase
+% we see the wedge shape seen before but as N1 increases there is large
+% distortion. For N1 we cannot tell the wedge shape at all
+
+%% 3biii
+N1 = 3;
+N = 16;
+n = (-N1:1:N-N1);
+x = zeros(1,length(n));
+x(1:N-N1)= 1;
+
+% x[n-3]
+
+%% Question 3c
+%% 3ci
+
