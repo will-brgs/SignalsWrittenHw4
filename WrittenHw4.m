@@ -388,4 +388,53 @@ hold off
 %the coefficients are seen to be symmetric as expected
 %% Question 3c
 %% 3ci
+N = 10;
+n = (0:1:(2*N));
+rect = zeros(length(n),1);
+rect(1:N) = 1;
+ak = fft(rect);
 
+ift = ifft(ak.^2);
+
+figure, hold on
+subplot (3,1,1)
+stem(abs((ift)),'b', LineWidth=1.5);
+title('Real Part IFFT,N=20');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+
+n = (0:1:30);
+rect = zeros(length(n),1);
+rect(1:15) = 1;
+ak = fft(rect);
+
+ift = ifft(ak.^2);
+
+subplot (3,1,2)
+stem(abs((ift)),'b', LineWidth=1.5);
+title('Real Part IFFT,N=15');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+
+n = (0:1:40);
+rect = zeros(length(n),1);
+rect(1:20) = 1;
+ak = fft(rect);
+
+ift = ifft(ak.^2);
+
+subplot (3,1,3)
+stem(abs((ift)),'b', LineWidth=1.5);
+title('Real Part IFFT,N=10');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+sgtitle('Inverse fourier series results for b.ci')
+hold off
+
+% Observation, we can see a clear identical solution as the convolution of
+% 2 square waves from homework 2. although we see shifting from the center
+% this is simply a symptom of the way that its being calculated. all
+% 'pyramid' structures are identical to each other just with more points
+% defining the strucre at each indicie.
