@@ -4,24 +4,25 @@
 % * Class:                    ESE 351
 % * Date:                     Created 2/17/2024, Last Edited 2/26/2024
 % * With contributions from:  Mack Larosa, Tasha Igic, Mischa Tranor
-%%
+close all
+%% Question 1
 %% a
 N = (2*pi) / (pi/5);
 n = 0:1:N-1; 
 a = 3 + sin(4*pi/5*n + pi/10) + cos(2*pi*n) + (-1).^n;
 
-afft = ft(a);
+afft = fft(a);
 
 ak_a = afft/N;
 
 figure;
 hold on
-subplot(2,2,1);
+subplot(2,1,1);
 stem(abs(fftshift(afft)), LineWidth=1.5);
 title('Real Part')
 xlabel('k value');
 ylabel('Ak Output');
-subplot(2,2,2)
+subplot(2,1,2)
 stem(angle(fftshift(afft)), LineWidth=1.5);
 title('Imaginary Part')
 xlabel('k value');
@@ -32,18 +33,18 @@ hold off
 %% b, one period
 b = [1,0,-2,0,0];
 N = 5;
-bfft = ft(b);
+bfft = fft(b);
 ak_b = bfft / N;
 
 figure;
 hold on
 subplot(2,1,1);
-stem(real(fftshift(b)), LineWidth=1.5);
+stem(real(fftshift(bfft)), LineWidth=1.5);
 title('Real Part')
 xlabel('k value');
 ylabel('Ak Output');
 subplot(2,1,2)
-stem(imag(fftshift(b)), LineWidth=1.5);
+stem(imag(fftshift(bfft)), LineWidth=1.5);
 title('Imaginary Part')
 xlabel('k value');
 ylabel('Ak Output');
@@ -54,18 +55,18 @@ hold off
 N = 4;
 n = 0:1:N-1;
 c1 = 1 - sin(pi/2*n);
-c1fft = ft(c1);
+c1fft = fft(c1);
 ak_c1 = c1fft/N;
 
 figure;
 hold on
 subplot(2,1,1);
-stem(real(fftshift(c1)), LineWidth=1.5);
+stem(real(fftshift(c1fft)), LineWidth=1.5);
 title('Real Part')
 xlabel('k value');
 ylabel('Ak Output');
 subplot(2,1,2)
-stem(imag(fftshift(c1)), LineWidth=1.5);
+stem(imag(fftshift(c1fft)), LineWidth=1.5);
 title('Imaginary Part')
 xlabel('k value');
 ylabel('Ak Output');
@@ -76,40 +77,40 @@ hold off
 N = 16;
 n = 0:1:N-1;
 c2 = 1 - sin(pi/2*n);
-c2fft = ft(c2);
+c2fft = fft(c2);
 ak_c2 = c2fft/N;
 
 figure;
 hold on
 subplot(2,1,1);
-stem(real(fftshift(c2)), LineWidth=1.5);
+stem(real(fftshift(c2fft)), LineWidth=1.5);
 title('Real Part')
 xlabel('k value');
 ylabel('Ak Output');
 subplot(2,1,2)
-stem(imag(fftshift(c2)), LineWidth=1.5);
+stem(imag(fftshift(c2fft)), LineWidth=1.5);
 title('Imaginary Part')
 xlabel('k value');
 ylabel('Ak Output');
-sgtitle('FFT For 1.C: N = 14');
+sgtitle('FFT For 1.C: N = 16');
 hold off
 
 %% d
 N = (2*pi)/(pi/4);
 n = 0:1:N-1; 
 d = sin(7*pi/2*n) + exp(1j*pi/4*n);
-dfft = ft(d);
+dfft = fft(d);
 ak_d = dfft/N;
 
 figure;
 hold on
 subplot(2,1,1);
-stem(real(fftshift(d)), LineWidth=1.5);
+stem(real(fftshift(dfft)), LineWidth=1.5);
 title('Real Part')
 xlabel('k value');
 ylabel('Ak Output');
 subplot(2,1,2)
-stem(imag(fftshift(d)), LineWidth=1.5);
+stem(imag(fftshift(dfft)), LineWidth=1.5);
 title('Imaginary Part')
 xlabel('k value');
 ylabel('Ak Output');
@@ -124,59 +125,54 @@ ak = [-1,-1j,0,3,2,3,0,1j];
 
 aifft = ifft(ak);
 
-figure
-hold on
-subplot (2,1,1)
-stem(k,fftshift(aifft), LineWidth=1.5);
-title('IFFT for a');
+figure, hold on
+subplot(3,2,1)
+stem(k,real(ifftshift(aifft)),'b',LineWidth=1.5);
+title('Real Part IFFT for a');
 xlabel('k value');
-ylabel('Ak Output');
-subplot (2,1,2)
-stem(k,hand, LineWidth=1.5);
-title('Hand Calcualation for b');
+ylabel('Function Output');
+
+subplot(3,2,2)
+stem(k,imag(ifftshift(aifft)), 'r',LineWidth=1.5);
+title('Imaginary Part IFFT for a');
 xlabel('k value');
-ylabel('Ak Output');
-sgtitle('IFFT for 2.a')
-hold off
+ylabel('Function Output');
+
 %% b
 k = 0:1:N;
 ak = cos((pi*k)/4);
 
 bifft = ifft(ak);
 
-figure
-hold on
-subplot (2,1,1)
-stem(k,ifftshift(bifft), LineWidth=1.5);
-title('IFFT for a');
-xlabel('k value');
-ylabel('Ak Output');
-subplot (2,1,2)
-stem(k,hand, LineWidth=1.5);
-title('Hand Calcualation for c');
+subplot(3,2,3)
+stem(k,real(ifftshift(bifft)), 'b',LineWidth=1.5);
+title('Real Part IFFT for a');
 xlabel('k value');
 ylabel('Function Output');
-sgtitle('IFFT for 2.b')
-hold off
+
+subplot(3,2,4)
+stem(k,imag(ifftshift(bifft)),'r', LineWidth=1.5);
+title('Imaginary Part IFFT for a');
+xlabel('k value');
+ylabel('Function Output');
+
 %% c
 k = -2:1:6;
-ak = [1,1,1,1,1,0,0,0];
-cbifft = ifft(ak);
+ak = [1,1,1,1,1,0,0,0,0];
+cifft = ifft(ak);
 
-subplot(3,1,3);
-figure
-hold on
-subplot (2,1,1)
-stem(k,real(ifftshift(cifft)), LineWidth=1.5);
-title('IFFT for a');
-xlabel('k value');
-ylabel('Ak Output');
-subplot (2,1,2)
-stem(k,hand, LineWidth=1.5);
-title('IFFT for a');
+subplot(3,2,5)
+stem(k,real(ifftshift(cifft)), 'b',LineWidth=1.5);
+title('Real Part IFFT for a');
 xlabel('k value');
 ylabel('Function Output');
-sgtitle('IFFT for 2.c')
+
+subplot(3,2,6)
+stem(k,imag(ifftshift(cifft)),'r', LineWidth=1.5);
+title('Imaginary Part IFFT for a');
+xlabel('k value');
+ylabel('Function Output');
+sgtitle('Queston 2 Function Outputs')
 hold off
 %% Question 3b
 %% 3bi
@@ -322,12 +318,74 @@ sgtitle('Fourier Series Coefficients for bii:')
 %% 3biii
 N1 = 3;
 N = 16;
-n = (-N1:1:N-N1);
-x = zeros(1,length(n));
-x(1:N-N1)= 1;
+n_reg = (-N1:1:N-N1);
+x_reg = zeros(1,length(n));
+x_reg(1:N-N1)= 1;
 
 % x[n-3]
+n = (-N1-3:1:N-N1-3);
+n = n - 3;
+x = zeros(1,length(n));
+x(1:N-N1) = 1;
+ft = fft(x);
 
+figure, hold on
+subplot (3,2,1)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for x[n-3]');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,2)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for x[n-3]');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+% x[n]-1/2
+n = (-N1:1:N-N1);
+x = zeros(1,length(n));
+x(1:N-N1) = 1;
+x = x - 1/2;
+ft = fft(x);
+
+subplot (3,2,3)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for x[n]-1/2');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,4)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for x[n]-1/2');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+
+%cos(pi*n)*x[n]
+n = (-N1:1:N-N1);
+x = zeros(1,length(n));
+x(1:N-N1) = 1;
+x = x .* cos(pi*n);
+ft = fft(x);
+
+subplot (3,2,5)
+stem(n,abs(ft),'b', LineWidth=1.5);
+title('Magnitude for x[n]cos(pi*n)');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+subplot (3,2,6)
+stem(n,angle(ft), 'r', LineWidth=1.5);
+title('Phase for x[n]cos(pi*n)');
+xlabel('index n');
+ylabel('Fourier Series Coefficient');
+sgtitle('Fourier Series Coefficients for biii')
+hold off
+
+%Observation: The wedge shapes described in earlier parts of 3b are also
+%seen here. We can see that the shift for the first plot makes no change to
+%the resulting fourier series coefficients. In fact, both the first and
+%second plots are identical to each other, showing the transformations of
+%x[n] have no bearing on the resulting ak. For the cosine function, I
+%expected no change but was wrong. The wedge shape is harder to notice and
+%the coefficients are seen to be symmetric as expected
 %% Question 3c
 %% 3ci
 
